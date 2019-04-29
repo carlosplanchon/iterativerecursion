@@ -54,8 +54,10 @@ executor.start_function_caller(
 
 ```
 Output:
+```
 a: 2
 b 3
+```
 
 Be careful with infinite loops:
 ```
@@ -83,6 +85,14 @@ executor.start_function_caller(
     enviroment_variables=dict(test_var=0),
     call_arg_n_func=dict(a="test_var")
     )
+```
+
+Output:
+```
+a: 0
+a: 1
+a: 2
+...
 ```
 
 Import types used on this module:
