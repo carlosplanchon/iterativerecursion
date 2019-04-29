@@ -12,6 +12,7 @@ pip3 install -U iterativerecursion
 
 ## Usage
 ```
+from iterativerecursion import FunctionReturn
 from iterativerecursion import IterativeRecursionEngine
 
 
@@ -51,7 +52,6 @@ executor.start_function_caller(
     enviroment_variables=dict(test_var=2),
     call_arg_n_func=dict(a="test_var")
     )
-
 ```
 Output:
 ```
@@ -61,6 +61,7 @@ b 3
 
 Be careful with infinite loops:
 ```
+from iterativerecursion import FunctionReturn
 from iterativerecursion import IterativeRecursionEngine
 
 
