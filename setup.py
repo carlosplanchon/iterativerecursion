@@ -9,7 +9,7 @@ readme = Path("README.md").read_text()
 setup(
     name="iterativerecursion",
     packages=["iterativerecursion"],
-    version="0.1",
+    version="0.2",
     license="GPL3",
     description="Python3 module to simulate recursion with iteration.",
     long_description=readme,
@@ -18,7 +18,7 @@ setup(
     author_email="bubbledoloresuruguay2@gmail.com",
     url="https://github.com/carlosplanchon/iterativerecursion",
     download_url="https://github.com/carlosplanchon/"
-        "iterativerecursion/archive/v0.1.tar.gz",
+        "iterativerecursion/archive/v0.2.tar.gz",
     keywords=["iterative", "recursion"],
     classifiers=[
         "Intended Audience :: Developers",
