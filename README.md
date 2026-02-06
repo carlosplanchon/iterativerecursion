@@ -1,5 +1,7 @@
 # iterativerecursion
 
+![iterativerecursion banner](https://raw.githubusercontent.com/carlosplanchon/iterativerecursion/refs/heads/master/assets/banner.jpeg)
+
 *A Python module to simulate recursive function calls using iteration, providing explicit control over execution flow and avoiding stack overflow issues.*
 
 ## Overview
