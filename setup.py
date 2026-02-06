@@ -10,7 +10,7 @@ setup(
     name="iterativerecursion",
     packages=["iterativerecursion"],
     version="0.2",
-    license="GPL3",
+    license="MIT",
     description="Python3 module to simulate recursion with iteration.",
     long_description=readme,
     long_description_content_type="text/markdown",
