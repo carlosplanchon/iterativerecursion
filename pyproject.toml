@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "iterativerecursion"
-version = "0.3"
+version = "0.5"
 description = "Python3 module to simulate recursion with iteration."
 readme = "README.md"
 
@@ -29,6 +29,9 @@ requires-python = ">=3.10"
 
 [project.urls]
 Repository = "https://github.com/carlosplanchon/iterativerecursion"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0"]
 
 [tool.setuptools]
 packages = ["iterativerecursion"]
