@@ -1,13 +1,13 @@
 # iterativerecursion
-*Python3 module to simulate recursion with iteration.*
+*Python module to simulate recursion with iteration.*
 
 This is a module I've done because I need something like this and
 in part as a little experiment.
 
 ## Installation
-### Install with pip
-```
-pip3 install -U iterativerecursion
+### Install with uv
+```bash
+uv add iterativerecursion
 ```
 
 ## Usage
