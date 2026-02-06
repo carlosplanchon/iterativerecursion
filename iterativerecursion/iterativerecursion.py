@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from typing import Any, Dict, Optional, Union
+from typing import Any, Union
 
-VarsDict = Dict[str, Any]
-FunctionReturn = Dict[str, Union[Dict, Optional[str]]]
+VarsDict = dict[str, Any]
+FunctionReturn = dict[str, Union[dict, str | None]]
 
 
 class IterativeRecursionEngine:
@@ -18,7 +18,7 @@ class IterativeRecursionEngine:
     as arguments to a function.
     """
     def __init__(self):
-        self.functions_dict: Dict[Any, Any] = dict()
+        self.functions_dict: dict[Any, Any] = dict()
         self.enviroment_variables: VarsDict = dict()
 
     def start_function_caller(
