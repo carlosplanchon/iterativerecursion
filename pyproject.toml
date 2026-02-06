@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "iterativerecursion"
-version = "0.6"
+version = "1.0"
 description = "A Python module to simulate recursive function calls using iteration, providing explicit control over execution flow and avoiding stack overflow issues."
 readme = "README.md"
 
