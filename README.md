@@ -43,19 +43,18 @@ from iterativerecursion import IterativeRecursionEngine, FunctionReturn
 
 def greet(name: str) -> FunctionReturn:
     print(f"Hello, {name}!")
-    return {
-        "arg_env_mapping": {"name": "next_name"},
-        "next_function_to_call": "farewell",
-        "returned_values": {"next_name": "World"}
-    }
+    return FunctionReturn(
+        returned_values={"next_name": "World"},
+        next_function_to_call="farewell",
+        arg_env_mapping={"name": "next_name"}
+    )
 
 def farewell(name: str) -> FunctionReturn:
     print(f"Goodbye, {name}!")
-    return {
-        "arg_env_mapping": {},
-        "next_function_to_call": None,  # None terminates execution
-        "returned_values": {}
-    }
+    return FunctionReturn(
+        returned_values={}
+        # next_function_to_call defaults to None to terminate
+    )
 
 # Create engine and register functions
 engine = IterativeRecursionEngine()
@@ -78,13 +77,15 @@ Goodbye, World!
 
 ## How It Works
 
-Functions return a structured dictionary (`FunctionReturn`) with three keys:
+Functions return a `FunctionReturn` dataclass instance with three attributes:
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `next_function_to_call` | `str \| None` | Name of the next function to execute, or `None` to stop |
+| Attribute | Type | Description |
+|-----------|------|-------------|
 | `returned_values` | `dict[str, Any]` | Values to store in the shared environment |
-| `arg_env_mapping` | `dict[str, str]` | Mapping of parameter names to environment variable keys |
+| `next_function_to_call` | `str \| None` | Name of the next function to execute, or `None` to stop (default: `None`) |
+| `arg_env_mapping` | `dict[str, str]` | Mapping of parameter names to environment variable keys (default: auto-mapped from `returned_values` keys) |
+
+**Key Feature**: If `arg_env_mapping` is not specified, it automatically maps each key in `returned_values` to itself. For example, `{"counter": 5}` automatically creates `{"counter": "counter"}` mapping.
 
 The engine maintains a shared environment where functions can store and retrieve values across calls.
 
@@ -102,20 +103,18 @@ engine = IterativeRecursionEngine()
 @engine.register
 def greet(name: str) -> FunctionReturn:
     print(f"Hello, {name}!")
-    return {
-        "arg_env_mapping": {"name": "next_name"},
-        "next_function_to_call": "farewell",
-        "returned_values": {"next_name": "World"}
-    }
+    return FunctionReturn(
+        returned_values={"next_name": "World"},
+        next_function_to_call="farewell",
+        arg_env_mapping={"name": "next_name"}
+    )
 
 @engine.register
 def farewell(name: str) -> FunctionReturn:
     print(f"Goodbye, {name}!")
-    return {
-        "arg_env_mapping": {},
-        "next_function_to_call": None,
-        "returned_values": {}
-    }
+    return FunctionReturn(
+        returned_values={}
+    )
 
 # Start execution and get final state
 result = engine.start_function_caller(
@@ -132,19 +131,17 @@ from iterativerecursion import IterativeRecursionEngine, FunctionReturn
 
 def factorial_step(n: int, accumulator: int) -> FunctionReturn:
     if n <= 1:
-        return {
-            "arg_env_mapping": {},
-            "next_function_to_call": None,
-            "returned_values": {"result": accumulator}
-        }
-    return {
-        "arg_env_mapping": {"n": "n", "accumulator": "accumulator"},
-        "next_function_to_call": "factorial_step",
-        "returned_values": {
+        return FunctionReturn(
+            returned_values={"result": accumulator}
+        )
+    # Auto-mapping: {"n": n-1, "accumulator": ...} automatically maps to itself
+    return FunctionReturn(
+        returned_values={
             "n": n - 1,
             "accumulator": accumulator * n
-        }
-    }
+        },
+        next_function_to_call="factorial_step"
+    )
 
 engine = IterativeRecursionEngine()
 engine.add_function(factorial_step)
@@ -164,20 +161,18 @@ from iterativerecursion import IterativeRecursionEngine, FunctionReturn
 
 def fibonacci(n: int, a: int, b: int) -> FunctionReturn:
     if n == 0:
-        return {
-            "arg_env_mapping": {},
-            "next_function_to_call": None,
-            "returned_values": {"result": a}
-        }
-    return {
-        "arg_env_mapping": {"n": "n", "a": "a", "b": "b"},
-        "next_function_to_call": "fibonacci",
-        "returned_values": {
+        return FunctionReturn(
+            returned_values={"result": a}
+        )
+    # Auto-mapping handles {"n": "n", "a": "a", "b": "b"} automatically
+    return FunctionReturn(
+        returned_values={
             "n": n - 1,
             "a": b,
             "b": a + b
-        }
-    }
+        },
+        next_function_to_call="fibonacci"
+    )
 
 engine = IterativeRecursionEngine()
 engine.add_function(fibonacci)
@@ -199,11 +194,11 @@ from iterativerecursion import IterativeRecursionEngine, FunctionReturn
 
 def infinite_loop(counter: int) -> FunctionReturn:
     print(f"Iteration: {counter}")
-    return {
-        "arg_env_mapping": {"counter": "counter"},
-        "next_function_to_call": "infinite_loop",
-        "returned_values": {"counter": counter + 1}
-    }
+    # Auto-mapping: no need for {"counter": "counter"}
+    return FunctionReturn(
+        returned_values={"counter": counter + 1},
+        next_function_to_call="infinite_loop"
+    )
 
 engine = IterativeRecursionEngine()
 engine.add_function(infinite_loop)
@@ -254,11 +249,9 @@ Decorator to register a function with the engine. Alternative to `add_function()
 ```python
 @engine.register
 def my_function(x: int) -> FunctionReturn:
-    return {
-        "arg_env_mapping": {},
-        "next_function_to_call": None,
-        "returned_values": {"result": x * 2}
-    }
+    return FunctionReturn(
+        returned_values={"result": x * 2}
+    )
 ```
 
 ##### `add_environment_variables(variables: dict[str, Any])`
@@ -305,14 +298,17 @@ print(result["some_value"])
 ### Type Definitions
 
 #### `FunctionReturn`
-TypedDict defining the required return structure for functions.
+Dataclass defining the required return structure for functions.
 
 ```python
-class FunctionReturn(TypedDict):
-    arg_env_mapping: dict[str, str]
-    next_function_to_call: str | None
+@dataclass
+class FunctionReturn:
     returned_values: dict[str, Any]
+    next_function_to_call: str | None = None
+    arg_env_mapping: dict[str, str] = field(default_factory=dict)
 ```
+
+**Auto-mapping feature**: If `arg_env_mapping` is not provided, it automatically maps each key in `returned_values` to itself. This means you rarely need to specify `arg_env_mapping` explicitly.
 
 #### `VarsDict`
 Type alias for variable dictionaries.
