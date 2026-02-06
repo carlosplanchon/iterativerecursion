@@ -24,6 +24,15 @@ This library is useful when you need:
 - To convert recursive algorithms to iterative ones systematically
 - State machines or complex control flow patterns
 
+## Scope & limitations
+
+This engine is essentially a **trampoline / dispatcher**: each step returns the name of the next function to run.
+That makes it a great fit for **tail recursion (linear step-by-step recursion)**, workflows, and state machines.
+
+It does **not** automatically emulate a full call stack. Patterns that require “returning to the caller”
+(e.g. tree recursion like `fib(n-1) + fib(n-2)`, post-order DFS reductions) require you to model an explicit
+stack/frames (continuations) inside `environment_variables`.
+
 For most cases, **normal recursion is simpler and preferred**. Use this when recursion depth or explicit control becomes a concern.
 
 ## Installation
@@ -156,7 +165,7 @@ engine.start_function_caller(
 print(f"5! = {engine.environment_variables['result']}")  # Output: 5! = 120
 ```
 
-### Fibonacci Sequence
+### Fibonacci Sequence (tail-recursive / iterative form)
 
 ```python
 from iterativerecursion import IterativeRecursionEngine, FunctionReturn
