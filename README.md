@@ -35,6 +35,12 @@ stack/frames (continuations) inside `environment_variables`.
 
 For most cases, **normal recursion is simpler and preferred**. Use this when recursion depth or explicit control becomes a concern.
 
+## Documentation
+
+📚 **[View interactive documentation on DeepWiki](https://deepwiki.com/carlosplanchon/iterativerecursion)**
+
+Explore the full API reference, examples, and guides in an interactive format.
+
 ## Installation
 
 ### Using uv
