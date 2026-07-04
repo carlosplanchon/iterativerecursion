@@ -73,6 +73,19 @@ class TestBasicFunctionality:
 
         assert result == {}  # Returns empty environment dict
 
+    def test_none_initial_function_applies_environment(self):
+        """Test that None initial function still applies the passed environment."""
+        executor = IterativeRecursionEngine()
+        result = executor.start_function_caller(
+            next_function_to_call=None,
+            environment_variables={"seed": 42},
+            arg_env_mapping={}
+        )
+
+        # Passing None terminates immediately but still records the environment
+        assert result == {"seed": 42}
+        assert executor.environment_variables["seed"] == 42
+
 
 class TestEnvironmentVariables:
     """Test environment variable management."""

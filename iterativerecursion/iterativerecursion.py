@@ -122,9 +122,9 @@ class IterativeRecursionEngine:
 
     def start_function_caller(
         self,
-        next_function_to_call: str,
+        next_function_to_call: str | None,
         environment_variables: VarsDict,
-        arg_env_mapping: VarsDict,
+        arg_env_mapping: dict[str, str],
         max_iterations: int | None = None
     ) -> VarsDict:
         """
@@ -143,10 +143,10 @@ class IterativeRecursionEngine:
         :raises ValueError: If function returns invalid structure
         :raises TypeError: If function return has wrong types
         """
+        self.environment_variables.update(environment_variables)
+
         if next_function_to_call is None:
             return self.environment_variables
-
-        self.environment_variables.update(environment_variables)
 
         # Resolve initial arguments
         arg_env_mapping = self._resolve_arguments(arg_env_mapping, next_function_to_call)

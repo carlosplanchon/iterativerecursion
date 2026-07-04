@@ -2,6 +2,12 @@
 
 ![iterativerecursion banner](https://raw.githubusercontent.com/carlosplanchon/iterativerecursion/refs/heads/master/assets/banner.jpeg)
 
+[![CI](https://github.com/carlosplanchon/iterativerecursion/actions/workflows/ci.yml/badge.svg)](https://github.com/carlosplanchon/iterativerecursion/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/iterativerecursion.svg)](https://pypi.org/project/iterativerecursion/)
+[![Python versions](https://img.shields.io/pypi/pyversions/iterativerecursion.svg)](https://pypi.org/project/iterativerecursion/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/carlosplanchon/iterativerecursion)
+
 *A Python module to simulate recursive function calls using iteration, providing explicit control over execution flow and avoiding stack overflow issues.*
 
 ## Overview
@@ -285,7 +291,7 @@ engine.add_environment_variables({"x": 10, "y": 20})
 Begins executing functions starting from the specified function.
 
 - **Parameters**:
-  - `next_function_to_call` (str): Name of the first function to call
+  - `next_function_to_call` (str | None): Name of the first function to call. Pass `None` to terminate immediately after recording `environment_variables`.
   - `environment_variables` (dict[str, Any]): Initial environment variables
   - `arg_env_mapping` (dict[str, str]): Parameter mapping for first function
   - `max_iterations` (int | None): Maximum iterations allowed (default: None/unlimited)
